@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="lowcodelabs.workflowrolewidget.Workflowrolewidget" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    
+    <name>Workflow Role Widget</name>
+    <description>Custom workflow visualization for role masters with horizontal/vertical layout based on order</description>
+    <properties>
+        <!-- Data source configuration -->
+        <propertyGroup caption="Data source">
+            <property key="roleDataSource" type="datasource" isList="true">
+                <caption>Role masters</caption>
+                <description>Data source for role master entities</description>
+            </property>
+        </propertyGroup>
+        
+        <!-- Role Master Attributes -->
+        <propertyGroup caption="Role Master Attributes">
+            <property key="roleName" type="attribute" dataSource="roleDataSource">
+                <caption>Role Name</caption>
+                <description>Role name attribute from RoleMaster entity</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            
+            <property key="orderNumber" type="attribute" dataSource="roleDataSource">
+                <caption>Order</caption>
+                <description>Order number for workflow sequence</description>
+                <attributeTypes>
+                    <attributeType name="Integer"/>
+                </attributeTypes>
+            </property>
+            
+            <property key="roleType" type="attribute" dataSource="roleDataSource" required="false">
+                <caption>Role Type</caption>
+                <description>Role type (Initiator/Approver)</description>
+                <attributeTypes>
+                    <attributeType name="Enum"/>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+        
+        <!-- Actions -->
+        <propertyGroup caption="Events">
+            <property key="onClickAction" type="action" dataSource="roleDataSource" required="false">
+                <caption>On click</caption>
+                <description>Action to execute when role master is clicked (for editing)</description>
+            </property>
+            
+            <property key="onDeleteAction" type="action" dataSource="roleDataSource" required="false">
+                <caption>On delete</caption>
+                <description>Action to execute when delete button is clicked</description>
+            </property>
+        </propertyGroup>
+        
+        <!-- Appearance -->
+        <propertyGroup caption="Appearance">
+            <property key="showDeleteButton" type="boolean" defaultValue="true">
+                <caption>Show delete button</caption>
+                <description>Show delete button for each role master</description>
+            </property>
+            
+            <property key="showEditButton" type="boolean" defaultValue="true">
+                <caption>Show edit button</caption>
+                <description>Show edit button for each role master</description>
+            </property>
+        </propertyGroup>
+        
+        <!-- Common properties -->
+        <propertyGroup caption="Common">
+            <systemProperty key="Name"/>
+            <systemProperty key="TabIndex"/>
+        </propertyGroup>
+        
+        <!-- Visibility properties -->
+        <propertyGroup caption="Visibility">
+            <systemProperty key="Visibility"/>
+        </propertyGroup>
+    </properties>
+</widget>

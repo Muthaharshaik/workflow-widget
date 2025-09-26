@@ -1,0 +1,260 @@
+/* WorkflowRoleWidget.css */
+
+/* Main container - holds the entire workflow */
+.workflow-widget-container {
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    min-height: 200px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Workflow content - vertical layout for different orders */
+.workflow-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Each workflow step contains one order group + vertical arrow */
+.workflow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Order group container - holds roles with same order number */
+.order-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Order label - shows "Order 1", "Order 2", etc. */
+.order-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    background-color: #e9ecef;
+    padding: 4px 12px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* Horizontal roles container - side-by-side layout for same order */
+.horizontal-roles {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Individual role item container with horizontal arrow */
+.role-item-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Individual role master item */
+.role-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 16px;
+    min-width: 160px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Role item hover effect */
+.role-item:hover {
+    border-color: #007bff;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Role item content */
+.role-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+}
+
+/* Role name styling */
+.role-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+    line-height: 1.2;
+}
+
+/* Role type styling */
+.role-type {
+    font-size: 12px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Action buttons container */
+.role-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+/* Edit and delete buttons */
+.edit-btn,
+.delete-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    font-size: 14px;
+}
+
+.edit-btn:hover {
+    background-color: #e3f2fd;
+}
+
+.delete-btn:hover {
+    background-color: #ffebee;
+}
+
+/* Horizontal arrow between same-order roles */
+.horizontal-arrow {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+    user-select: none;
+    animation: pulse-horizontal 2s infinite;
+}
+
+/* Vertical arrow between different orders */
+.vertical-arrow {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin: 8px 0;
+    user-select: none;
+    animation: pulse-vertical 2s infinite;
+}
+
+/* Arrow animations */
+@keyframes pulse-horizontal {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse-vertical {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Loading state */
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 16px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Empty state styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    text-align: center;
+    gap: 8px;
+}
+
+.no-data-message {
+    font-size: 18px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.no-data-subtitle {
+    font-size: 14px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Responsive design - mobile/tablet */
+@media (max-width: 768px) {
+    .workflow-widget-container {
+        padding: 12px;
+    }
+    
+    .horizontal-roles {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .role-item-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .horizontal-arrow {
+        transform: rotate(90deg);
+        font-size: 18px;
+    }
+    
+    .role-item {
+        min-width: 200px;
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Focus states for accessibility */
+.role-item:focus,
+.edit-btn:focus,
+.delete-btn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Disabled state for actions */
+.edit-btn:disabled,
+.delete-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.edit-btn:disabled:hover,
+.delete-btn:disabled:hover {
+    background-color: transparent;
+}
