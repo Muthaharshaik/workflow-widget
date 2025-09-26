@@ -45,9 +45,9 @@ export function Workflowrolewidget(props) {
     };
 
     // Get role type from role item
-    const getRoleType = (roleItem) => {
-        return props.roleType && props.roleType.get ? props.roleType.get(roleItem)?.value || "" : "";
-    };
+    // const getRoleType = (roleItem) => {
+    //     return props.roleType && props.roleType.get ? props.roleType.get(roleItem)?.value || "" : "";
+    // };
 
     // Handle edit role action
     const handleEditRole = (roleItem) => {
@@ -70,32 +70,19 @@ export function Workflowrolewidget(props) {
     };
 
     // Render individual role master item
-    const renderRoleItem = (roleItem, isLast = false) => {
-        const roleName = getRoleName(roleItem);
-        const roleType = getRoleType(roleItem);
-        
-        return (
-            <div key={roleItem.id} className="role-item-container">
+const renderRoleItem = (roleItem, orderNumber) => {
+    const roleName = getRoleName(roleItem);
+    
+    return (
+        <div key={roleItem.id} className="role-item-container">
+            <div className="role-item-wrapper"> {/* Add wrapper */}
+                <div className="role-order-badge">{orderNumber}</div> {/* Add order badge */}
                 <div className="role-item" onClick={() => handleEditRole(roleItem)}>
                     <div className="role-content">
                         <div className="role-name">{roleName}</div>
-                        <div className="role-type">{roleType}</div>
                     </div>
                     
                     <div className="role-actions">
-                        {props.showEditButton && (
-                            <button 
-                                className="edit-btn"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleEditRole(roleItem);
-                                }}
-                                title="Edit Role"
-                            >
-                                ✏️
-                            </button>
-                        )}
-                        
                         {props.showDeleteButton && (
                             <button 
                                 className="delete-btn"
@@ -105,30 +92,37 @@ export function Workflowrolewidget(props) {
                                 }}
                                 title="Delete Role"
                             >
-                                🗑️
+                                <svg 
+                                    width="22" 
+                                    height="22" 
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="#dc2626" 
+                                    strokeWidth="2"
+                                >
+                                    <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14ZM10 11v6M14 11v6" />
+                                </svg>
                             </button>
                         )}
                     </div>
                 </div>
-                
-                {!isLast && <div className="horizontal-arrow">→</div>}
             </div>
-        );
-    };
-
+        </div>
+    );
+};
     // Render a group of roles with the same order (horizontal layout)
-    const renderOrderGroup = (orderNumber, roleItems) => {
-        return (
-            <div key={orderNumber} className="order-group">
-                <div className="order-label">Order {orderNumber}</div>
-                <div className="horizontal-roles">
-                    {roleItems.map((roleItem, index) => 
-                        renderRoleItem(roleItem, index === roleItems.length - 1)
-                    )}
-                </div>
+   const renderOrderGroup = (orderNumber, roleItems) => {
+    return (
+        <div key={orderNumber} className="order-group">
+            {/* <div className="order-label">{orderNumber}</div> */}
+            <div className="horizontal-roles">
+                {roleItems.map((roleItem, index) => 
+                    renderRoleItem(roleItem, orderNumber, index === roleItems.length - 1) // Pass orderNumber here
+                )}
             </div>
-        );
-    };
+        </div>
+    );
+};
 
     // Show loading state
     if (loading) {

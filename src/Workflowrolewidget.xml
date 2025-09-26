@@ -47,7 +47,7 @@
         <propertyGroup caption="Events">
             <property key="onClickAction" type="action" dataSource="roleDataSource" required="false">
                 <caption>On click</caption>
-                <description>Action to execute when role master is clicked (for editing)</description>
+                <description>Action to execute when role master is clicked for editing </description>
             </property>
             
             <property key="onDeleteAction" type="action" dataSource="roleDataSource" required="false">

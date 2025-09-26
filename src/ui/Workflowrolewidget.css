@@ -1,5 +1,3 @@
-/* WorkflowRoleWidget.css */
-
 /* Main container - holds the entire workflow */
 .workflow-widget-container {
     padding: 16px;
@@ -7,6 +5,9 @@
     border-radius: 8px;
     min-height: 200px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: auto;
+    display: flex;
+    /* justify-content: center; */
 }
 
 /* Workflow content - vertical layout for different orders */
@@ -15,6 +16,8 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    width: fit-content;
+    margin: auto;
 }
 
 /* Each workflow step contains one order group + vertical arrow */
@@ -31,19 +34,23 @@
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    width: 100%;
-    max-width: 800px;
+    /* width: 100%;
+    max-width: 800px; */
 }
 
 /* Order label - shows "Order 1", "Order 2", etc. */
 .order-label {
-    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
     font-weight: 600;
-    color: #495057;
-    background-color: #e9ecef;
-    padding: 4px 12px;
-    border-radius: 12px;
-    text-align: center;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #53858e
 }
 
 /* Horizontal roles container - side-by-side layout for same order */
@@ -52,8 +59,10 @@
     flex-direction: row;
     align-items: center;
     gap: 16px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
+    width: fit-content;
+    padding: 20px 0 8px 0;
 }
 
 /* Individual role item container with horizontal arrow */
@@ -61,21 +70,25 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    position: relative;
 }
 
 /* Individual role master item */
 .role-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    background-color: white;
+    flex-direction: column;
+    flex-shrink: 0;
     border: 2px solid #dee2e6;
-    border-radius: 8px;
-    padding: 12px 16px;
-    min-width: 160px;
+    min-height: 60px;
+    height: 100px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 240px;
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 /* Role item hover effect */
@@ -95,10 +108,12 @@
 
 /* Role name styling */
 .role-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #212529;
-    line-height: 1.2;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2e3192;
+    overflow: hidden;   
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
 }
 
 /* Role type styling */
@@ -112,7 +127,35 @@
 .role-actions {
     display: flex;
     gap: 8px;
-    margin-left: 12px;
+    /* margin-left: 12px; */
+    justify-content: end;
+    width: 100%;
+}
+
+.role-item-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.role-order-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #53858e;
+    margin-bottom: 8px;
+    z-index: 1;
+    position: absolute;
+    top: -10px;
+    left: 45%;
+    right: 50%;
 }
 
 /* Edit and delete buttons */
@@ -148,10 +191,10 @@
 .vertical-arrow {
     font-size: 24px;
     font-weight: bold;
-    color: #28a745;
+    color: #2e3192;
     margin: 8px 0;
     user-select: none;
-    animation: pulse-vertical 2s infinite;
+    /* animation: pulse-vertical 2s infinite; */
 }
 
 /* Arrow animations */
