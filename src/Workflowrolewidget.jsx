@@ -1,10 +1,14 @@
 import { createElement, useState, useEffect } from "react";
 import "./ui/Workflowrolewidget.css";
+import adUserIcon from './assets/images/images__4_.png'
+import nonAdUserIcon from './assets/images/approve.jpg'
+import isApproveIcon from './assets/images/circle_check_tick_correct.svg'
+import isRejectIcon from './assets/images/circle_clear_cross_cancel.svg'
+import isReturnIcon from './assets/images/refresh_2.svg'
 
 export function Workflowrolewidget(props) {
     const [groupedRoles, setGroupedRoles] = useState({});
     const [loading, setLoading] = useState(true);
-
     // Process the role data when it changes
     useEffect(() => {
         if (props.roleDataSource && props.roleDataSource.status === "available") {
@@ -44,10 +48,31 @@ export function Workflowrolewidget(props) {
         return props.roleName && props.roleName.get ? props.roleName.get(roleItem)?.value || "Unnamed Role" : "Unnamed Role";
     };
 
-    // Get role type from role item
-    // const getRoleType = (roleItem) => {
-    //     return props.roleType && props.roleType.get ? props.roleType.get(roleItem)?.value || "" : "";
-    // };
+    //Get role type from role item
+    const getRoleType = (roleItem) => {
+        return props.roleType && props.roleType.get ? props.roleType.get(roleItem)?.value || "" : "";
+    };
+
+
+    // Get userFromAD boolean from role item
+const getUserFromAD = (roleItem) => {
+    return props.userFromAD && props.userFromAD.get ? props.userFromAD.get(roleItem)?.value || false : false;
+};
+
+// Get ableToApprove boolean from role item
+const getAbleToApprove = (roleItem) => {
+    return props.ableToApprove && props.ableToApprove.get ? props.ableToApprove.get(roleItem)?.value || false : false;
+};
+
+// Get ableToReject boolean from role item
+const getAbleToReject = (roleItem) => {
+    return props.ableToReject && props.ableToReject.get ? props.ableToReject.get(roleItem)?.value || false : false;
+};
+
+// Get ableToReturn boolean from role item
+const getAbleToReturn = (roleItem) => {
+    return props.ableToReturn && props.ableToReturn.get ? props.ableToReturn.get(roleItem)?.value || false : false;
+};
 
     // Handle edit role action
     const handleEditRole = (roleItem) => {
@@ -69,28 +94,88 @@ export function Workflowrolewidget(props) {
         }
     };
 
-    // Render individual role master item
+    // Handle non-AD user icon click action
+    const handleNonADUserIconClick = (roleItem) => {
+        if (props.onNonADUserIconClick && props.onNonADUserIconClick.get && props.onNonADUserIconClick.get(roleItem)) {
+            const action = props.onNonADUserIconClick.get(roleItem);
+            if (action.canExecute) {
+                action.execute();
+            }
+        }
+    };
+
+
+// Render individual role master item
 const renderRoleItem = (roleItem, orderNumber) => {
     const roleName = getRoleName(roleItem);
+    const roleType = getRoleType(roleItem);
+    const userFromAD = getUserFromAD(roleItem);
+    const ableToApprove = getAbleToApprove(roleItem);
+    const ableToReject = getAbleToReject(roleItem);
+    const ableToReturn = getAbleToReturn(roleItem);
+    
+    // Check if role type is "Approver" (case-insensitive)
+    const isApprover = roleType && roleType.toLowerCase() === "approver";
     
     return (
         <div key={roleItem.id} className="role-item-container">
-            <div className="role-item-wrapper"> {/* Add wrapper */}
-                <div className="role-order-badge">{orderNumber}</div> {/* Add order badge */}
+            <div className="role-item-wrapper">
+                <div className="role-order-badge">{orderNumber}</div>
                 <div className="role-item" onClick={() => handleEditRole(roleItem)}>
-                    <div className="role-content">
-                        <div className="role-name">{roleName}</div>
-                    </div>
+                    {/* Role Name at Top */}
+                    <div className="role-name">{roleName}</div>
                     
-                    <div className="role-actions">
-                        {props.showDeleteButton && (
+                    {/* Bottom Section with Left and Right divs */}
+                    <div className="role-bottom-section">
+                        {/* Left Bottom: Action Icons (Approve, Reject, Return) */}
+                        <div className="left-bottom-icons">
+                            {isApprover && ableToApprove && (
+                                <img 
+                                    src={isApproveIcon} 
+                                    alt="Can Approve" 
+                                    className="action-icon approve-icon"
+                                    title="Can Approve"
+                                />
+                            )}
+                            {isApprover && ableToReturn && (
+                                <img 
+                                    src={isReturnIcon} 
+                                    alt="Can Return" 
+                                    className="action-icon return-icon"
+                                    title="Can Return"
+                                />
+                            )}
+                            {isApprover && ableToReject && (
+                                <img 
+                                    src={isRejectIcon} 
+                                    alt="Can Reject" 
+                                    className="action-icon reject-icon"
+                                    title="Can Reject"
+                                />
+                            )}
+                        </div>
+                        
+                        {/* Right Bottom: User Icon + Delete Button */}
+                        <div className="right-bottom-icons">
+                            {isApprover && (
+                                <img 
+                                    src={userFromAD ? adUserIcon : nonAdUserIcon} 
+                                    alt={userFromAD ? "AD User" : "Non-AD User"}
+                                    className={`user-icon ${!userFromAD ? 'clickable-user-icon' : ''}`}
+                                    onClick={(e) => {
+                                        if (!userFromAD) {
+                                           e.stopPropagation();
+                                           handleNonADUserIconClick(roleItem);
+                                        }
+                                    }}
+                                />
+                            )}
                             <button 
                                 className="delete-btn"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     handleDeleteRole(roleItem);
                                 }}
-                                title="Delete Role"
                             >
                                 <svg 
                                     width="22" 
@@ -103,7 +188,7 @@ const renderRoleItem = (roleItem, orderNumber) => {
                                     <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14ZM10 11v6M14 11v6" />
                                 </svg>
                             </button>
-                        )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -125,26 +210,32 @@ const renderRoleItem = (roleItem, orderNumber) => {
 };
 
     // Show loading state
-    if (loading) {
-        return (
-            <div className="workflow-widget-container">
-                <div className="loading-state">Loading workflow...</div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className="workflow-widget-container">
+    //             <div className="loading-state">Loading workflow...</div>
+    //         </div>
+    //     );
+    // }
 
-    // Show empty state if no roles
-    const orderNumbers = Object.keys(groupedRoles).sort((a, b) => parseInt(a) - parseInt(b));
-    if (orderNumbers.length === 0) {
-        return (
-            <div className="workflow-widget-container">
-                <div className="empty-state">
-                    <div className="no-data-message">No role masters found</div>
-                    <div className="no-data-subtitle">Add role masters to see the workflow</div>
-                </div>
+// Show empty state if no roles
+const orderNumbers = Object.keys(groupedRoles).sort((a, b) => parseInt(a) - parseInt(b));
+
+if (orderNumbers.length === 0) {
+    return (
+        <div className="workflow-widget-container">
+            <div className="empty-state">
+                {/* Use Mendix internal image if no custom image is provided */}
+                <img 
+                    src={props.emptyStateImage?.value?.uri} 
+                    alt="No Data" 
+                    className="no-data-image" 
+                    style={{height: '420px'}}
+                />
             </div>
-        );
-    }
+        </div>
+    );
+}
 
     // Main render - vertical layout of order groups
     return (

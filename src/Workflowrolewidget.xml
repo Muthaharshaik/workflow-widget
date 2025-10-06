@@ -6,6 +6,7 @@
     
     <name>Workflow Role Widget</name>
     <description>Custom workflow visualization for role masters with horizontal/vertical layout based on order</description>
+    <icon/>
     <properties>
         <!-- Data source configuration -->
         <propertyGroup caption="Data source">
@@ -33,7 +34,7 @@
                 </attributeTypes>
             </property>
             
-            <property key="roleType" type="attribute" dataSource="roleDataSource" required="false">
+            <property key="roleType" type="attribute" dataSource="roleDataSource">
                 <caption>Role Type</caption>
                 <description>Role type (Initiator/Approver)</description>
                 <attributeTypes>
@@ -41,6 +42,39 @@
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
+
+            <property key="userFromAD" type="attribute" dataSource="roleDataSource">
+               <caption>User From AD</caption>
+               <description>Boolean indicating if the user is from AD</description>
+               <attributeTypes>
+                   <attributeType name="Boolean"/>
+                </attributeTypes>
+            </property>
+
+            <property key="ableToApprove" type="attribute" dataSource="roleDataSource">
+                <caption>Able to Approve</caption>
+                <description>Boolean indicating if role can approve</description>
+                <attributeTypes>
+                   <attributeType name="Boolean"/>
+                </attributeTypes>
+            </property>
+
+            <property key="ableToReject" type="attribute" dataSource="roleDataSource">
+                <caption>Able to Reject</caption>
+                <description>Boolean indicating if role can reject</description>
+                <attributeTypes>
+                   <attributeType name="Boolean"/>
+                </attributeTypes>
+            </property>
+
+            <property key="ableToReturn" type="attribute" dataSource="roleDataSource">
+                <caption>Able to Return</caption>
+                <description>Boolean indicating if role can return</description>
+                <attributeTypes>
+                   <attributeType name="Boolean"/>
+                </attributeTypes>
+            </property>
+
         </propertyGroup>
         
         <!-- Actions -->
@@ -54,18 +88,19 @@
                 <caption>On delete</caption>
                 <description>Action to execute when delete button is clicked</description>
             </property>
+
+            <property key="onNonADUserIconClick" type="action" dataSource="roleDataSource">
+               <caption>On Non-AD User Icon Click</caption>
+               <description>Action to execute when non-AD user icon is clicked</description>
+            </property>
+            
         </propertyGroup>
         
         <!-- Appearance -->
         <propertyGroup caption="Appearance">
-            <property key="showDeleteButton" type="boolean" defaultValue="true">
-                <caption>Show delete button</caption>
-                <description>Show delete button for each role master</description>
-            </property>
-            
-            <property key="showEditButton" type="boolean" defaultValue="true">
-                <caption>Show edit button</caption>
-                <description>Show edit button for each role master</description>
+            <property key="emptyStateImage" type="image" required="false">
+               <caption>Empty state image</caption>
+                <description>Image to show when no data available</description>
             </property>
         </propertyGroup>
         

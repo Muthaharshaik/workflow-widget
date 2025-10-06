@@ -1,13 +1,14 @@
 /* Main container - holds the entire workflow */
 .workflow-widget-container {
     padding: 16px;
-    background-color: #f8f9fa;
     border-radius: 8px;
     min-height: 200px;
+    max-height: 363px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    overflow-x: auto;
+    overflow: auto;
     display: flex;
-    /* justify-content: center; */
+    scrollbar-width: thin;
+    background-color: #f8f9fa;
 }
 
 /* Workflow content - vertical layout for different orders */
@@ -153,7 +154,7 @@
     margin-bottom: 8px;
     z-index: 1;
     position: absolute;
-    top: -10px;
+    bottom: -15px;
     left: 45%;
     right: 50%;
 }
@@ -178,6 +179,67 @@
     background-color: #ffebee;
 }
 
+/* Bottom section container - uses space-between */
+.role-bottom-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+/* Left bottom: Action icons (Approve, Reject, Return) */
+.left-bottom-icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Right bottom: User icon + Delete button */
+.right-bottom-icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Action icon styling */
+.action-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+}
+
+.approve-icon {
+    filter: brightness(0) saturate(100%) invert(46%) sepia(100%) saturate(396%) hue-rotate(82deg) brightness(93%) contrast(88%);
+}
+
+.return-icon {
+    height: 18px;
+    filter: brightness(0) saturate(100%) invert(50%) sepia(5%) saturate(779%) hue-rotate(182deg) brightness(97%) contrast(84%)
+}
+
+.reject-icon {
+    filter: brightness(0) saturate(100%) invert(52%) sepia(84%) saturate(3135%) hue-rotate(330deg) brightness(92%) contrast(100%)
+}
+
+/* User type icon styling */
+.user-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+.clickable-user-icon {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
 /* Horizontal arrow between same-order roles */
 .horizontal-arrow {
     font-size: 20px;
@@ -189,12 +251,12 @@
 
 /* Vertical arrow between different orders */
 .vertical-arrow {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
     color: #2e3192;
-    margin: 8px 0;
+    margin: 3px 0;
     user-select: none;
-    /* animation: pulse-vertical 2s infinite; */
+    height: 10px;
 }
 
 /* Arrow animations */
@@ -234,24 +296,10 @@
 /* Empty state styling */
 .empty-state {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 200px;
-    text-align: center;
-    gap: 8px;
-}
-
-.no-data-message {
-    font-size: 18px;
-    font-weight: 600;
-    color: #495057;
-}
-
-.no-data-subtitle {
-    font-size: 14px;
-    color: #6c757d;
-    font-style: italic;
+    width: 100%;
+    overflow:hidden
 }
 
 /* Responsive design - mobile/tablet */
