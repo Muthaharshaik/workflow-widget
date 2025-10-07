@@ -55,9 +55,9 @@ export function Workflowrolewidget(props) {
 
 
     // Get userFromAD boolean from role item
-const getUserFromAD = (roleItem) => {
-    return props.userFromAD && props.userFromAD.get ? props.userFromAD.get(roleItem)?.value || false : false;
-};
+    const getUserFromAD = (roleItem) => {
+       return props.userFromAD && props.userFromAD.get ? props.userFromAD.get(roleItem)?.value || false : false;
+    };
 
 // Get ableToApprove boolean from role item
 const getAbleToApprove = (roleItem) => {
@@ -106,7 +106,8 @@ const getAbleToReturn = (roleItem) => {
 
 
 // Render individual role master item
-const renderRoleItem = (roleItem, orderNumber) => {
+//This function is used to render each role master card
+const renderRoleItem = (roleItem, orderNumber, isLastGroup) => {
     const roleName = getRoleName(roleItem);
     const roleType = getRoleType(roleItem);
     const userFromAD = getUserFromAD(roleItem);
@@ -120,7 +121,8 @@ const renderRoleItem = (roleItem, orderNumber) => {
     return (
         <div key={roleItem.id} className="role-item-container">
             <div className="role-item-wrapper">
-                <div className="role-order-badge">{orderNumber}</div>
+                {/* dont show the order number for the last order group */}
+                {!isLastGroup && <div className="role-order-badge">{orderNumber}</div>}
                 <div className="role-item" onClick={() => handleEditRole(roleItem)}>
                     {/* Role Name at Top */}
                     <div className="role-name">{roleName}</div>
@@ -195,28 +197,22 @@ const renderRoleItem = (roleItem, orderNumber) => {
         </div>
     );
 };
-    // Render a group of roles with the same order (horizontal layout)
-   const renderOrderGroup = (orderNumber, roleItems) => {
+
+// Render a group of roles with the same order (horizontal layout)
+// This function handles the horizantol flow 
+   const renderOrderGroup = (orderNumber, roleItems, isLastGroup) => {
     return (
         <div key={orderNumber} className="order-group">
             {/* <div className="order-label">{orderNumber}</div> */}
             <div className="horizontal-roles">
                 {roleItems.map((roleItem, index) => 
-                    renderRoleItem(roleItem, orderNumber, index === roleItems.length - 1) // Pass orderNumber here
+                    renderRoleItem(roleItem, orderNumber, isLastGroup) // Pass orderNumber here
                 )}
             </div>
         </div>
     );
 };
 
-    // Show loading state
-    // if (loading) {
-    //     return (
-    //         <div className="workflow-widget-container">
-    //             <div className="loading-state">Loading workflow...</div>
-    //         </div>
-    //     );
-    // }
 
 // Show empty state if no roles
 const orderNumbers = Object.keys(groupedRoles).sort((a, b) => parseInt(a) - parseInt(b));
@@ -238,12 +234,13 @@ if (orderNumbers.length === 0) {
 }
 
     // Main render - vertical layout of order groups
+    //This adds the vertical arrow between the order groups(main render)
     return (
         <div className="workflow-widget-container">
             <div className="workflow-content">
                 {orderNumbers.map((orderNumber, groupIndex) => (
                     <div key={orderNumber} className="workflow-step">
-                        {renderOrderGroup(orderNumber, groupedRoles[orderNumber])}
+                        {renderOrderGroup(orderNumber, groupedRoles[orderNumber], groupIndex === orderNumbers.length-1)}
                         
                         {groupIndex < orderNumbers.length - 1 && (
                             <div className="vertical-arrow">↓</div>
