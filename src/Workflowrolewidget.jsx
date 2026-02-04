@@ -59,20 +59,24 @@ export function Workflowrolewidget(props) {
        return props.userFromAD && props.userFromAD.get ? props.userFromAD.get(roleItem)?.value || false : false;
     };
 
-// Get ableToApprove boolean from role item
-const getAbleToApprove = (roleItem) => {
-    return props.ableToApprove && props.ableToApprove.get ? props.ableToApprove.get(roleItem)?.value || false : false;
-};
+    // Get ableToApprove boolean from role item
+    const getAbleToApprove = (roleItem) => {
+        return props.ableToApprove && props.ableToApprove.get ? props.ableToApprove.get(roleItem)?.value || false : false;
+    };
 
-// Get ableToReject boolean from role item
-const getAbleToReject = (roleItem) => {
-    return props.ableToReject && props.ableToReject.get ? props.ableToReject.get(roleItem)?.value || false : false;
-};
+    const getFixedPerson = (roleItem) => {
+        return props.fixedPerson && props.fixedPerson.get ? props.fixedPerson.get(roleItem)?.value || false : false
+    }
 
-// Get ableToReturn boolean from role item
-const getAbleToReturn = (roleItem) => {
-    return props.ableToReturn && props.ableToReturn.get ? props.ableToReturn.get(roleItem)?.value || false : false;
-};
+    // Get ableToReject boolean from role item
+    const getAbleToReject = (roleItem) => {
+        return props.ableToReject && props.ableToReject.get ? props.ableToReject.get(roleItem)?.value || false : false;
+    };
+
+    // Get ableToReturn boolean from role item
+    const getAbleToReturn = (roleItem) => {
+        return props.ableToReturn && props.ableToReturn.get ? props.ableToReturn.get(roleItem)?.value || false : false;
+    };
 
     // Handle edit role action
     const handleEditRole = (roleItem) => {
@@ -114,6 +118,7 @@ const renderRoleItem = (roleItem, orderNumber, isLastGroup) => {
     const ableToApprove = getAbleToApprove(roleItem);
     const ableToReject = getAbleToReject(roleItem);
     const ableToReturn = getAbleToReturn(roleItem);
+    const isFixedPerson = getFixedPerson(roleItem)
     
     // Check if role type is "Approver" (case-insensitive)
     const isApprover = roleType && roleType.toLowerCase() === "approver";
@@ -159,19 +164,28 @@ const renderRoleItem = (roleItem, orderNumber, isLastGroup) => {
                         
                         {/* Right Bottom: User Icon + Delete Button */}
                         <div className="right-bottom-icons">
-                            {isApprover && (
-                                <img 
-                                    src={userFromAD ? adUserIcon : nonAdUserIcon} 
-                                    alt={userFromAD ? "AD User" : "Non-AD User"}
-                                    className={`user-icon ${!userFromAD ? 'clickable-user-icon' : ''}`}
-                                    onClick={(e) => {
-                                        if (!userFromAD) {
-                                           e.stopPropagation();
-                                           handleNonADUserIconClick(roleItem);
-                                        }
-                                    }}
-                                />
-                            )}
+                              {/* AD user icon */}
+                                {isApprover && userFromAD && (
+                                    <img
+                                        src={adUserIcon}
+                                        alt="AD User"
+                                        className="user-icon"
+                                        title="AD User"
+                                    />
+                                )}
+                                {/* Non-AD user icon (only when NOT fixed) */}
+                                {isApprover && !userFromAD && !isFixedPerson && (
+                                    <img
+                                        src={nonAdUserIcon}
+                                        alt="Non-AD User"
+                                        className="user-icon clickable-user-icon"
+                                        title="Non-AD User"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleNonADUserIconClick(roleItem);
+                                        }}
+                                    />
+                                )}
                             <button 
                                 className="delete-btn"
                                 onClick={(e) => {

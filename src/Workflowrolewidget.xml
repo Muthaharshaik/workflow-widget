@@ -59,6 +59,14 @@
                 </attributeTypes>
             </property>
 
+            <property key="fixedPerson" type="attribute" dataSource="roleDataSource">
+                  <caption>Fixed Person</caption>
+                  <description>Boolean indicating if the approver is fixed person or not</description>
+                  <attributeTypes>
+                      <attributeType name="Boolean" />
+                  </attributeTypes>
+            </property>
+
             <property key="ableToReject" type="attribute" dataSource="roleDataSource">
                 <caption>Able to Reject</caption>
                 <description>Boolean indicating if role can reject</description>
